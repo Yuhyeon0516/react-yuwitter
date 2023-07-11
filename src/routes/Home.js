@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { dbService } from "../fbase";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [yuweet, setYuweet] = useState("");
   const [yuweets, setYuweets] = useState([]);
 
-  const getYuweets = async () => {
-    const dbYuweets = await getDocs(collection(dbService, "yuweets"));
-    dbYuweets.forEach((document) => {
-      const yuweetObject = {
-        ...document.data(),
-        id: document.id,
-      };
-      setYuweets((prev) => [yuweetObject, ...prev]);
-    });
-  };
-
   useEffect(() => {
-    getYuweets();
+    onSnapshot(collection(dbService, "yuweets"), (snapshot) => {
+      const yuweetArray = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setYuweets(yuweetArray);
+    });
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     await addDoc(collection(dbService, "yuweets"), {
-      yuweet: yuweet,
+      text: yuweet,
       createdAt: Date.now(),
+      creatorId: userObj.uid,
     });
     setYuweet("");
   };
@@ -37,7 +30,6 @@ const Home = () => {
     setYuweet(value);
   };
 
-  console.log(yuweets);
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -47,7 +39,7 @@ const Home = () => {
       <div>
         {yuweets.map((yw) => (
           <div key={yw.id}>
-            <h4>{yw.yuweet}</h4>
+            <h4>{yw.text}</h4>
           </div>
         ))}
       </div>
