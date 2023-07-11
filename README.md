@@ -24,7 +24,8 @@ yuwitter@0.1.0 /Users/kim-yuhyeon/Desktop/Web/react-yuwitter
 Login은 Firebase를 이용하여 Email & Password, Google, Github Login을 구현해두었습니다.<br/>
 만약 가입이 된 Email인 경우 Create Account 진행 시 이미 가입 된 계정이라고 표시해주는<br/>
 Error Message도 구현해두었으면 Sign in Button을 통하여 Login 시도가 가능하게 제작하였습니다.<br/>
-(비디오)
+
+https://github.com/Yuhyeon0516/react-yuwitter/assets/120432007/75d90fde-bb4e-414a-bd11-511a6af66c02
 
 ## Home
 
@@ -33,10 +34,13 @@ Home Page에서는 게시물을 올릴 수 있으며 firestore의 snapshot 기�
 추가로 이미지 첨부도 firebase의 storage 기능을 이용하여 구현해두었습니다.<br/>
 이전에 본인의 계정으로 올린 게시물의 Text를 수정하거나 삭제하는 기능도 구현해두었습니다.<br/>
 (아래 영상의 좌측은 제 구글계정, 우측은 test 계정으로 Login하여 test하였습니다.)<br/>
-(비디오)
+
+https://github.com/Yuhyeon0516/react-yuwitter/assets/120432007/115600b4-9827-4c12-90c1-82453affddd8
 
 ## Profile
 
 Profile Page는 특별한 기능없이 Logout 기능만 구현해두었습니다.<br/>
 추후 본인이 올린 게시물만 보여줄수있게 구현예정입니다.<br/>
-(비디오)
+
+https://github.com/Yuhyeon0516/react-yuwitter/assets/120432007/e058664d-a001-4450-b25d-739e472a8434
+
