@@ -22,7 +22,7 @@ function App() {
   return (
     <>
       {init ? <Router isLoggedIn={isLoggedIn} userObj={userObj} /> : "Initializing..."}
-      <footer>&copy; {new Date().getFullYear()} Yuwitter</footer>
+      {/* <footer>&copy; {new Date().getFullYear()} Yuwitter</footer> */}
     </>
   );
 }
