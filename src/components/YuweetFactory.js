@@ -69,6 +69,7 @@ const YuweetFactory = ({ userObj }) => {
         <FontAwesomeIcon icon={faPlus} />
       </label>
       <input
+        id="attach-file"
         type="file"
         accept="image/*"
         onChange={onFileChange}
