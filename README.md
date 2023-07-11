@@ -17,3 +17,7 @@ yuwitter@0.1.0 /Users/kim-yuhyeon/Desktop/Web/react-yuwitter
 ├── react@18.2.0
 └── web-vitals@2.1.4
 ```
+
+## Login
+
+Login은 Firebase를 이용하여 Email & Password, Google, Github Login을 구현해두었습니다.<br/>
