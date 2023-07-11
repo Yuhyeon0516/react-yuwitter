@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { dbService, storageService } from "../fbase";
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { dbService } from "../fbase";
+import { collection, onSnapshot } from "firebase/firestore";
+
 import Yuweet from "../components/Yuweet";
-import { v4 as uuid } from "uuid";
+import YuweetFactory from "../components/YuweetFactory";
 
 const Home = ({ userObj }) => {
-  const [yuweet, setYuweet] = useState("");
   const [yuweets, setYuweets] = useState([]);
-  const [attachment, setAttachment] = useState("");
 
   useEffect(() => {
     onSnapshot(collection(dbService, "yuweets"), (snapshot) => {
@@ -17,64 +15,9 @@ const Home = ({ userObj }) => {
     });
   }, []);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    let fileUrl = "";
-    if (attachment !== "") {
-      const fileRef = ref(storageService, `${userObj.uid}/${uuid()}`);
-      const response = await uploadString(fileRef, attachment, "data_url");
-      fileUrl = await getDownloadURL(response.ref);
-    }
-    const uploadYuweet = {
-      text: yuweet,
-      createdAt: Date.now(),
-      creatorId: userObj.uid,
-      fileUrl: fileUrl,
-    };
-
-    await addDoc(collection(dbService, "yuweets"), uploadYuweet);
-    setYuweet("");
-    setAttachment("");
-  };
-
-  const onChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setYuweet(value);
-  };
-
-  const onFileChange = (e) => {
-    const {
-      target: { files },
-    } = e;
-    const theFile = files[0];
-    const reader = new FileReader();
-    reader.onloadend = (readerEvent) => {
-      const {
-        currentTarget: { result },
-      } = readerEvent;
-      setAttachment(result);
-    };
-    reader.readAsDataURL(theFile);
-  };
-
-  const onClearAttachClick = () => setAttachment("");
-
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <input value={yuweet} onChange={onChange} type="text" placeholder="What's on your mind?" maxLength={120} />
-        <input type="file" accept="image/*" onChange={onFileChange} />
-        <input type="submit" value="Yuweet" />
-        {attachment && (
-          <div>
-            <img src={attachment} width="50px" height="50px" alt="file" />
-            <button onClick={onClearAttachClick}>Clear</button>
-          </div>
-        )}
-      </form>
+      <YuweetFactory userObj={userObj} />
       <div>
         {yuweets.map((yw) => (
           <Yuweet key={yw.id} yuweetObj={yw} isOwner={yw.creatorId === userObj.uid} />

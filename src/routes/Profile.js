@@ -13,9 +13,7 @@ const Profile = ({ userObj }) => {
   const getMyYuweets = async () => {
     const q = query(collection(dbService, "yuweets"), where("creatorId", "==", userObj.uid), orderBy("creatorId", "desc"));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.data());
-    });
+    querySnapshot.forEach((doc) => {});
   };
 
   useEffect(() => {
