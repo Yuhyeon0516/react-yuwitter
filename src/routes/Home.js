@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { dbService } from "../fbase";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import Yuweet from "../components/Yuweet";
 
 const Home = ({ userObj }) => {
   const [yuweet, setYuweet] = useState("");
@@ -38,9 +39,7 @@ const Home = ({ userObj }) => {
       </form>
       <div>
         {yuweets.map((yw) => (
-          <div key={yw.id}>
-            <h4>{yw.text}</h4>
-          </div>
+          <Yuweet key={yw.id} yuweetObj={yw} isOwner={yw.creatorId === userObj.uid} />
         ))}
       </div>
     </div>
