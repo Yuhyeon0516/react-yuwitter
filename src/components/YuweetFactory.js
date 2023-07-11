@@ -3,11 +3,16 @@ import { dbService, storageService } from "../fbase";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { v4 as uuid } from "uuid";
 import { addDoc, collection } from "firebase/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const YuweetFactory = ({ userObj }) => {
   const [yuweet, setYuweet] = useState("");
   const [attachment, setAttachment] = useState("");
   const onSubmit = async (e) => {
+    if (yuweet === "") {
+      return;
+    }
     e.preventDefault();
 
     let fileUrl = "";
@@ -53,14 +58,37 @@ const YuweetFactory = ({ userObj }) => {
   const onClearAttachClick = () => setAttachment("");
 
   return (
-    <form onSubmit={onSubmit}>
-      <input value={yuweet} onChange={onChange} type="text" placeholder="What's on your mind?" maxLength={120} />
-      <input type="file" accept="image/*" onChange={onFileChange} />
-      <input type="submit" value="Yuweet" />
+    <form onSubmit={onSubmit} className="factoryForm">
+      <div className="factoryInput__container">
+        <input value={yuweet} onChange={onChange} type="text" placeholder="What's on your mind?" maxLength={120} className="factoryInput__input" />
+
+        <input type="submit" value="Yuweet" className="factoryInput__arrow" />
+      </div>
+      <label for="attach-file" className="factoryInput__label">
+        <span>Add photos</span>
+        <FontAwesomeIcon icon={faPlus} />
+      </label>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={onFileChange}
+        style={{
+          opacity: 0,
+        }}
+      />
       {attachment && (
-        <div>
-          <img src={attachment} width="50px" height="50px" alt="file" />
-          <button onClick={onClearAttachClick}>Clear</button>
+        <div className="factoryForm__attachment">
+          <img
+            src={attachment}
+            style={{
+              backgroundImage: attachment,
+            }}
+            alt="attachImage"
+          />
+          <div className="factoryForm__clear" onClick={onClearAttachClick}>
+            <span>Remove</span>
+            <FontAwesomeIcon icon={faTimes} />
+          </div>
         </div>
       )}
     </form>

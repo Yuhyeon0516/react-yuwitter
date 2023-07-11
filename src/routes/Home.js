@@ -16,12 +16,14 @@ const Home = ({ userObj }) => {
   }, []);
 
   return (
-    <div>
-      <YuweetFactory userObj={userObj} />
-      <div>
-        {yuweets.map((yw) => (
-          <Yuweet key={yw.id} yuweetObj={yw} isOwner={yw.creatorId === userObj.uid} />
-        ))}
+    <div className="routes">
+      <div className="container">
+        <YuweetFactory userObj={userObj} />
+        <div style={{ marginTop: 30 }}>
+          {yuweets.map((yw) => (
+            <Yuweet key={yw.id} yuweetObj={yw} isOwner={yw.creatorId === userObj.uid} />
+          ))}
+        </div>
       </div>
     </div>
   );

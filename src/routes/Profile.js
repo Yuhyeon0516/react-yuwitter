@@ -21,9 +21,13 @@ const Profile = ({ userObj }) => {
   }, []);
 
   return (
-    <>
-      <button onClick={onLogOutClick}>Log Out</button>
-    </>
+    <div className="routes">
+      <div>
+        <span onClick={onLogOutClick} className="formBtn cancelBtn logOut">
+          Log Out
+        </span>
+      </div>
+    </div>
   );
 };
 

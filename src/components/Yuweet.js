@@ -2,6 +2,8 @@ import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { dbService, storageService } from "../fbase";
 import { deleteObject, ref } from "firebase/storage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Yuweet = ({ yuweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -34,24 +36,30 @@ const Yuweet = ({ yuweetObj, isOwner }) => {
   };
 
   return (
-    <div>
+    <div className="yuweet">
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
-            <input type="text" placeholder="Edit your yuweet" value={newYuweet} onChange={onChange} required />
-            <input type="submit" value="Update Yuweet" />
+          <form onSubmit={onSubmit} className="container yuweetEdit">
+            <input type="text" placeholder="Edit your yuweet" autoFocus value={newYuweet} onChange={onChange} required className="formInput" />
+            <input type="submit" value="Update Yuweet" className="formBtn" />
           </form>
-          <button onClick={toggleEditing}>Cancle</button>
+          <span onClick={toggleEditing} className="formBtn cancelBtn">
+            Cancle
+          </span>
         </>
       ) : (
         <>
           <h4>{yuweetObj.text}</h4>
           {yuweetObj.fileUrl && <img src={yuweetObj.fileUrl} width="50px" height="50px" alt="yuweetImage" />}
           {isOwner && (
-            <>
-              <button onClick={onDeleteClick}>Delete Yuweet</button>
-              <button onClick={toggleEditing}>Edit Yuweet</button>
-            </>
+            <div className="yuweet__actions">
+              <span onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={toggleEditing}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
         </>
       )}
