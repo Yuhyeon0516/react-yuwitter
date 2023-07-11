@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { dbService } from "../fbase";
+import { dbService, storageService } from "../fbase";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import Yuweet from "../components/Yuweet";
+import { v4 as uuid } from "uuid";
 
 const Home = ({ userObj }) => {
   const [yuweet, setYuweet] = useState("");
   const [yuweets, setYuweets] = useState([]);
-  const [attachment, setAttachment] = useState();
+  const [attachment, setAttachment] = useState("");
 
   useEffect(() => {
     onSnapshot(collection(dbService, "yuweets"), (snapshot) => {
@@ -17,12 +19,23 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await addDoc(collection(dbService, "yuweets"), {
+
+    let fileUrl = "";
+    if (attachment !== "") {
+      const fileRef = ref(storageService, `${userObj.uid}/${uuid()}`);
+      const response = await uploadString(fileRef, attachment, "data_url");
+      fileUrl = await getDownloadURL(response.ref);
+    }
+    const uploadYuweet = {
       text: yuweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
-    });
+      fileUrl: fileUrl,
+    };
+
+    await addDoc(collection(dbService, "yuweets"), uploadYuweet);
     setYuweet("");
+    setAttachment("");
   };
 
   const onChange = (e) => {
@@ -47,7 +60,7 @@ const Home = ({ userObj }) => {
     reader.readAsDataURL(theFile);
   };
 
-  const onClearAttachClick = () => setAttachment(null);
+  const onClearAttachClick = () => setAttachment("");
 
   return (
     <div>

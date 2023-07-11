@@ -43,6 +43,7 @@ const Yuweet = ({ yuweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{yuweetObj.text}</h4>
+          {yuweetObj.fileUrl && <img src={yuweetObj.fileUrl} width="50px" height="50px" alt="yuweetImage" />}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Yuweet</button>
