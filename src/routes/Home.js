@@ -11,7 +11,12 @@ const Home = ({ userObj }) => {
   useEffect(() => {
     onSnapshot(collection(dbService, "yuweets"), (snapshot) => {
       const yuweetArray = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setYuweets(yuweetArray);
+      setYuweets(
+        yuweetArray.sort((a, b) => {
+          if (a.createdAt < b.createdAt) return 1;
+          else return -1;
+        })
+      );
     });
   }, []);
 
